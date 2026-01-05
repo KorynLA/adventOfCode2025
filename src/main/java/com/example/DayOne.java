@@ -3,7 +3,8 @@ package com.example;
 import java.util.List;
 
 public class DayOne {
-    public int turnLock(int start, List<String> turns) {
+    public int turnLock(int start, String fileName) {
+        List<String> turns = FileProcessor.parseByNewLine(fileName);
         int location = 0;
         int counter = 0;
         
@@ -31,6 +32,7 @@ public class DayOne {
             start = location;
         }
 
+        System.out.println("Day one: " + counter);
         return counter;
-      }
+    }
 }
