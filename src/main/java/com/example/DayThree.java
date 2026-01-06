@@ -10,8 +10,8 @@ import java.util.Stack;
 * Find the largest joltages and sum them
  */
 public class DayThree {
-    private static List<Integer> getJoltages(List<String> batteryPack) {
-        List<Integer> maxJoltages = new ArrayList<>();
+    private static List<Long> getJoltages(List<String> batteryPack) {
+        List<Long> maxJoltages = new ArrayList<>();
         char[] joltage = new char[2];
         for(String battery : batteryPack) {
             joltage[0] = 0;
@@ -28,7 +28,7 @@ public class DayThree {
                 } 
                 index++;
             }
-            maxJoltages.add(Integer.valueOf((String.valueOf(joltage))));
+            maxJoltages.add(Long.valueOf((String.valueOf(joltage))));
         }
         return maxJoltages;
     }
@@ -36,17 +36,20 @@ public class DayThree {
     private static List<Long> getJoltagesPartTwo(List<String> batteryPack) {
         List<Long> maxJoltages = new ArrayList<>();
         Stack<Character> chosenBattery = new Stack<>();
+        int batteries = 12;
         for(String battery : batteryPack) {
             int index = 1;
             int batteryLength = battery.length();
-            char[] joltage = new char[12];
+            char[] joltage = new char[batteries];
             chosenBattery.push(battery.charAt(0));
             while(batteryLength > index) {
-                if(battery.charAt(index)-'0' > chosenBattery.peek()-'0'
-                    && batteryLength-index >= 12-chosenBattery.size()+1) {
-                        chosenBattery.pop();
+                if(battery.charAt(index)-'0' > chosenBattery.peek()-'0') { 
+                    while(!chosenBattery.isEmpty() && battery.charAt(index)-'0' > chosenBattery.peek()-'0' && 
+                        batteryLength-index > batteries-chosenBattery.size()) {
+                            chosenBattery.pop();
+                        }
                         chosenBattery.push(battery.charAt(index));
-                }  else if(chosenBattery.size() < 12) {
+                }  else if(chosenBattery.size() < batteries) {
                     chosenBattery.push(battery.charAt(index));
                 }
                 index++;
@@ -57,25 +60,24 @@ public class DayThree {
                 joltageIndex-=1;
                 joltage[joltageIndex] = chosenBattery.pop();
             }
-            System.out.println(joltage);
-            //BigInteger val = BigInteger.valueOf(Long.valueOf((String.valueOf(joltage))));
-            try {
-                maxJoltages.add(Long.valueOf((String.valueOf(joltage))));
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+            maxJoltages.add(Long.valueOf((String.valueOf(joltage))));
         }
         return maxJoltages;
     }
 
-    public Long result(String fileName) {
+    public Long result(String fileName, int part) {
         Long sum = 0L;
         List<String> batteryPack = FileProcessor.parseByNewLine(fileName);
-        List<Long> maxJoltages = getJoltagesPartTwo(batteryPack);
-        for(Long joltage : maxJoltages) {
-            sum = sum+joltage;
+        List<Long> maxJoltages;
+        if(part == 1) {
+            maxJoltages = getJoltages(batteryPack);
+        } else {
+            maxJoltages = getJoltagesPartTwo(batteryPack);
         }
-        System.out.println("Day three: "+ sum);
+        for(Long joltage : maxJoltages) {
+            sum+=joltage;
+        }
+        System.out.println("Day three part " + part +": "+ sum);
         return sum;
     }
 }

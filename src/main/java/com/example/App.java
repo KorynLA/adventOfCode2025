@@ -9,7 +9,8 @@ public class App {
         dayTwo.result("inputDayTwo.txt");
         dayTwo.resultPartTwo("inputDayTwo.txt");
         DayThree dayThree = new DayThree();
-        dayThree.result("inputDayThree.txt");
+        dayThree.result("inputDayThree.txt",1);
+        dayThree.result("inputDayThree.txt",2);
 
     }
 }
