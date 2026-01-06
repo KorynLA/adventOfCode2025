@@ -1,9 +1,10 @@
 package com.example;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
-import java.math.BigInteger;
+
 /*
 * Turn on 2 batteries from the  battery pack
 * Find the largest joltages and sum them
@@ -42,18 +43,15 @@ public class DayThree {
             chosenBattery.push(battery.charAt(0));
             while(batteryLength > index) {
                 if(battery.charAt(index)-'0' > chosenBattery.peek()-'0'
-                    && batteryLength-index >= 11) {
+                    && batteryLength-index >= 12-chosenBattery.size()+1) {
                         chosenBattery.pop();
                         chosenBattery.push(battery.charAt(index));
-                } else if(battery.charAt(index)-'0' > chosenBattery.peek()-'0'
-                    && batteryLength-index < 11) {
-                        chosenBattery.push(battery.charAt(index));
-                    
-                } else if(chosenBattery.size() < 11) {
+                }  else if(chosenBattery.size() < 12) {
                     chosenBattery.push(battery.charAt(index));
                 }
                 index++;
             }
+
             int joltageIndex = joltage.length;
             while(!chosenBattery.isEmpty() && joltageIndex > 0){
                 joltageIndex-=1;
@@ -61,7 +59,11 @@ public class DayThree {
             }
             System.out.println(joltage);
             //BigInteger val = BigInteger.valueOf(Long.valueOf((String.valueOf(joltage))));
-            maxJoltages.add(Long.valueOf((String.valueOf(joltage))));
+            try {
+                maxJoltages.add(Long.valueOf((String.valueOf(joltage))));
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
         return maxJoltages;
     }
